@@ -5,7 +5,7 @@ symbols = ['AAPL', 'MSFT', 'GOOGL', 'NVDA', 'RKLB', 'AMD', 'JPM', 'AVGO', 'META'
 
 for symbol in symbols:
     try:
-        stock_data = yf.download(symbol, period='1y')
+        stock_data = yf.download(symbol, period='2y')
         
         # Extract just the Close column and reset it
         close_data = stock_data[['Close']].copy()
@@ -65,12 +65,32 @@ class BacktestBase:
 
         print(f"Sold {units} at {price:.2f}, proceeds: {proceeds:.2f}")
 
+    def close_out(self):
+        if self.position == 1:
+            last_bar = len(self.data) - 1
+            self.place_sell_order(last_bar, units = self.units)
+        
 
+    def run_sma_strat(self, SMA1, SMA2):
+        self.position = 0
+        self.num_trades = 0
+        self.data["SMA1"] = self.data["Close"].rolling(SMA1).mean()
+        self.data["SMA2"] = self.data["Close"].rolling(SMA2).mean()
 
-bb = BacktestBase('data/AAPL_data.csv', 10000)
-print(bb.data.head())
+        for bar in range(SMA2, len(self.data)):
+            if self.position == 0:
+                if self.data["SMA1"].iloc[bar] > self.data["SMA2"].iloc[bar]:
+                    self.place_buy_order(bar, amount = self.balance)
+                    self.position = 1
+            elif self.position == 1:
+                if self.data["SMA1"].iloc[bar] < self.data["SMA2"].iloc[bar]:
+                    self.place_sell_order(bar, units = self.units)
+                    self.position = 0
+        self.close_out()
+        
+        print(f"Num Trades: {self.num_trades}")
+        print(f"Balance: {self.balance}")
+
+bb = BacktestBase('data/GOOGL_data.csv', 10000)
 print(f"Initial Balance: {bb.balance}")
-bb.place_buy_order(bar = 42, units = 10)
-print(f"After buy:  {bb.balance}")
-bb.place_sell_order(bar = 56, units= bb.units)
-print(f"After sell: {bb.balance}")
+bb.run_sma_strat(42, 252)
