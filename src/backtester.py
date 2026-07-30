@@ -141,10 +141,3 @@ self.initial_amount) * 100
         print(f"Num Trades: {self.num_trades}")
         print(f"Balance: {self.balance}")
 
-bb1 = BacktestBase('data/AAPL_data.csv', 10000)
-print("=== SMA Strategy ===")
-bb1.run_sma_strat(42, 252)
-
-print("\n=== Mean Reversion Strategy ===")
-bb2 = BacktestBase('data/AAPL_data.csv', 10000)
-bb2.run_mean_reversion(lookback=50, threshold=2.0)

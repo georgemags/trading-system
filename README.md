@@ -39,3 +39,25 @@ The script will:
 
 ## Error Handling
 If a stock fails to download, the script logs the error and continues with the next stock.
+
+
+## Documentation of Outputs
+=== SMA Strategy ===
+Bought 43 at 229.38, cost: 9863.39
+Sold 43 at 333.43, proceeds: 14337.49
+Total Return: 44.74%
+Sharpe Ratio: 0.06
+Max Drawdown: -33.36%
+Num Trades: 2
+Balance: 14474.104202270508
+
+=== Mean Reversion Strategy ===
+Bought 46 at 215.84, cost: 9928.62
+Sold 46 at 219.16, proceeds: 10081.38
+Bought 38 at 261.87, cost: 9951.19
+Sold 38 at 279.88, proceeds: 10635.52
+Total Return: 8.37%
+Sharpe Ratio: 0.06
+Max Drawdown: -33.36%
+Num Trades: 4
+Balance: 10837.095764160156
