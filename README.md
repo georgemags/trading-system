@@ -61,3 +61,12 @@ Sharpe Ratio: 0.06
 Max Drawdown: -33.36%
 Num Trades: 4
 Balance: 10837.095764160156
+
+
+=== Momentum Strategy ===
+Sold 37 at 308.91, proceeds: 11429.67
+Total Return: 16.01%
+Sharpe Ratio: 0.05
+Max Drawdown: -33.36%
+Num Trades: 22
+Balance: 11600.579803466802

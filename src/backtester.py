@@ -94,6 +94,8 @@ class BacktestBase:
         print(f"Num Trades: {self.num_trades}")
         print(f"Balance: {self.balance}")
 
+        print("=== SMA Strategy ===\n")
+
 
     def calculate_metrics(self):
         self.total_return = ((self.balance - self.initial_amount) /
@@ -123,8 +125,6 @@ self.initial_amount) * 100
 
         for bar in range(lookback, len(self.data)):
             price = self.data["Close"].iloc[bar]
-            mean = rolling_mean.iloc[bar]
-            std = rolling_std_dev.iloc[bar]
             if self.position == 0:
                 if price < lower_band.iloc[bar]:
                     self.place_buy_order(bar, amount = self.balance)
@@ -140,4 +140,34 @@ self.initial_amount) * 100
 
         print(f"Num Trades: {self.num_trades}")
         print(f"Balance: {self.balance}")
+
+        print("=== Mean Reversion Strategy ===\n")
+
+    def run_momentum(self, lookback=20, threshold = 0.02):
+        self.position = 0
+        self.num_trades = 0
+
+        self.data["momentum"] = self.data["Close"].pct_change(lookback)
+
+        for bar in range(lookback, len(self.data)):
+            momentum = self.data["momentum"].iloc[bar]
+            if self.position == 0:
+                if momentum > threshold:
+                    self.place_buy_order(bar, amount = self.balance)
+                    self.position = 1
+            elif self.position == 1:
+                if momentum < -threshold:
+                    self.place_sell_order(bar, units = self.units)
+                    self.position = 0
+
+        self.close_out()
+        self.calculate_metrics()
+        
+        print(f"Num Trades: {self.num_trades}")
+        print(f"Balance: {self.balance}")
+
+        print("=== Momentum Strategy ===\n")
+
+bb = BacktestBase("data/AAPL_data.csv",10000)
+bb.run_momentum()
 
