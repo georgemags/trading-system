@@ -70,3 +70,36 @@ Sharpe Ratio: 0.05
 Max Drawdown: -33.36%
 Num Trades: 22
 Balance: 11600.579803466802
+
+## Results after testing each ticker and strategy
+ Symbol  Strategy  Return %  Sharpe  Trades
+0    AAPL       sma     34.20    0.05       2
+1    AAPL  mean_rev      8.37    0.05       4
+2    AAPL  momentum     16.01    0.05      22
+3    MSFT       sma    -21.24    0.02       2
+4    MSFT  mean_rev     16.16    0.02       6
+5    MSFT  momentum     10.00    0.02      24
+6   GOOGL       sma     82.63    0.08       2
+7   GOOGL  mean_rev     33.53    0.08       6
+8   GOOGL  momentum     78.79    0.08      24
+9    NVDA       sma     12.73    0.06       2
+10   NVDA  mean_rev     15.07    0.06       4
+11   NVDA  momentum    -15.49    0.06      42
+12   RKLB       sma     45.05    0.12       2
+13   RKLB  mean_rev     71.87    0.12       4
+14   RKLB  momentum    926.37    0.12      32
+15    AMD       sma    172.05    0.08       2
+16    AMD  mean_rev     -3.40    0.08       4
+17    AMD  momentum    172.40    0.08      30
+18    JPM       sma     22.40    0.08       2
+19    JPM  mean_rev     31.18    0.08       4
+20    JPM  momentum     30.32    0.08      22
+21   AVGO       sma     33.48    0.08       2
+22   AVGO  mean_rev     83.48    0.08       6
+23   AVGO  momentum     -5.16    0.08      38
+24   META       sma    -12.47    0.02       2
+25   META  mean_rev     69.19    0.02       6
+26   META  momentum    -35.02    0.02      32
+27    TSM       sma     74.96    0.09       2
+28    TSM  mean_rev     15.79    0.09       4
+29    TSM  momentum     88.11    0.09      20
