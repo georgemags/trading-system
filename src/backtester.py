@@ -4,6 +4,14 @@ import yfinance as yf
 symbols = ['AAPL', 'MSFT', 'GOOGL', 'NVDA', 'RKLB', 'AMD', 'JPM',
 'AVGO', 'META', 'TSM']
 
+results = []
+
+strategies = [
+    ('sma', {'sma1': 42, 'sma2': 252}),
+    ('mean_rev', {'lookback': 50, 'threshold': 2.0}),
+    ('momentum', {'lookback': 20, 'threshold': 0.02})
+]
+
 for symbol in symbols:
     try:
         stock_data = yf.download(symbol, period='2y')
@@ -104,15 +112,15 @@ self.initial_amount) * 100
 
         avg_daily_returns = self.data['daily_returns'].mean()
         std_daily_returns = self.data['daily_returns'].std()
-        sharpe_ratio = avg_daily_returns/std_daily_returns
+        self.sharpe_ratio = avg_daily_returns/std_daily_returns
 
         running_max = self.data['Close'].expanding().max()
         drawdown = (self.data['Close'] - running_max) / running_max
-        max_drawdown = drawdown.min() * 100
+        self.max_drawdown = drawdown.min() * 100
 
         print(f"Total Return: {self.total_return:.2f}%")
-        print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
-        print(f"Max Drawdown: {max_drawdown:.2f}%")
+        print(f"Sharpe Ratio: {self.sharpe_ratio:.2f}")
+        print(f"Max Drawdown: {self.max_drawdown:.2f}%")
 
 
     def run_mean_reversion(self, lookback = 50, threshold = 2.0):
@@ -168,6 +176,25 @@ self.initial_amount) * 100
 
         print("=== Momentum Strategy ===\n")
 
-bb = BacktestBase("data/AAPL_data.csv",10000)
-bb.run_momentum()
+for symbol in symbols:
+    for strat_name, params in strategies:
+        bb = BacktestBase(f'data/{symbol}_data.csv', 10000)
+        
+        if strat_name == 'sma':
+            bb.run_sma_strat(params['sma1'], params['sma2'])
+        elif strat_name == 'mean_rev':
+            bb.run_mean_reversion(params['lookback'], params['threshold'])
+        elif strat_name == 'momentum':
+            bb.run_momentum(params['lookback'], params['threshold'])
+        
+        results.append({
+            'Symbol': symbol,
+            'Strategy': strat_name,
+            'Return %': round(bb.total_return,2),
+            'Sharpe': round(bb.sharpe_ratio,2),
+            'Trades': round(bb.num_trades,2)
+        })
 
+df = pd.DataFrame(results)
+print(df.to_string())
+df.to_csv('results.csv')
