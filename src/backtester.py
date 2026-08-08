@@ -16,11 +16,9 @@ for symbol in symbols:
     try:
         stock_data = yf.download(symbol, period='2y')
 
-        # Extract just the Close column and reset it
         close_data = stock_data[['Close']].copy()
         close_data.columns = ['Close']
 
-        # Save it
         close_data.to_csv(f'data/{symbol}_data.csv')
         print(f"Saved {symbol} data")
 
@@ -40,11 +38,19 @@ class BacktestBase:
         self.ftc = ftc
         self.ptc = ptc
         self.get_data()
+        self.symbol = filename.split("/")[1].split("_")[0]
 
     def get_data(self):
         self.data = pd.read_csv(self.filename, index_col=0, parse_dates=True)
 
     def place_buy_order(self, bar, units = None, amount = None):
+        """ Places a buy order of specified ticket at given day(bar) and the amount
+
+        Args:
+            bar (int): given day of stock market
+            units (int, optional): How many shares of stock. Defaults to None.
+            amount (int, optional): Amount of money. Defaults to None.
+        """        
         price = self.data.iloc[bar]['Close']
 
         if units is None:
@@ -60,6 +66,13 @@ class BacktestBase:
         print(f"Bought {units} at {price:.2f}, cost: {cost:.2f}")
 
     def place_sell_order(self, bar, units = None, amount = None):
+        """ Places a sell order of specified ticket at given day(bar) and the units
+
+        Args:
+            bar (int): given day of stock market
+            units (int, optional): How many shares of stock. Defaults to None.
+            amount (int, optional): Amount of money. Defaults to None.
+        """        
         price = self.data.iloc[bar]['Close']
 
         if units is None:
@@ -75,12 +88,24 @@ class BacktestBase:
         print(f"Sold {units} at {price:.2f}, proceeds: {proceeds:.2f}")
 
     def close_out(self):
+        """ Close out of current positions
+        """        
         if self.position == 1:
             last_bar = len(self.data) - 1
             self.place_sell_order(last_bar, units = self.units)
 
 
     def run_sma_strat(self, SMA1, SMA2):
+        """Runs SMA(Simple Moving Average) strategy which starts looking back
+        at 42 days for SMA1 and comparing price for those days to lookback days 
+        of 252.
+        Will trigger a buy order if the SMA1 price is greater than SMA2 and sell
+        order if SMA1 price is less than SMA2
+
+        Args:
+            SMA1 (int): Simple moving average across how many input days
+            SMA2 (int): Simple moving average across how many input days
+        """        
         self.position = 0
         self.num_trades = 0
         self.data["SMA1"] = self.data["Close"].rolling(SMA1).mean()
@@ -102,10 +127,16 @@ class BacktestBase:
         print(f"Num Trades: {self.num_trades}")
         print(f"Balance: {self.balance}")
 
-        print("=== SMA Strategy ===\n")
+        print("=== SMA Strategy ===")
+        print(f"Stock: {self.symbol }\n")
 
 
     def calculate_metrics(self):
+        """Calculates metrics of stock with total return, sharpe ratio and max drawdown
+
+        Prints:
+            int: Total Return as a percentage, Sharpe Ratio and Max Drawdown
+        """        
         self.total_return = ((self.balance - self.initial_amount) /
 self.initial_amount) * 100
         self.data['daily_returns'] = self.data['Close'].pct_change()
@@ -124,6 +155,14 @@ self.initial_amount) * 100
 
 
     def run_mean_reversion(self, lookback = 50, threshold = 2.0):
+        """Runs mean reversion strategy which triggers a buy order if the price 
+        during the lookback days(50) is less than the lower band and a sell order
+        if the price is higher than the upper band
+
+        Args:
+            lookback (int, optional): How many days to go back to. Defaults to 50.
+            threshold (float, optional): Chosen percentage. Defaults to 2.0.
+        """        
         rolling_mean = self.data['Close'].rolling(lookback).mean()
         rolling_std_dev = self.data['Close'].rolling(lookback).std()
         lower_band = rolling_mean - (threshold * rolling_std_dev)
@@ -149,9 +188,18 @@ self.initial_amount) * 100
         print(f"Num Trades: {self.num_trades}")
         print(f"Balance: {self.balance}")
 
-        print("=== Mean Reversion Strategy ===\n")
+        print("=== Mean Reversion Strategy ===")
+        print(f"Stock: {self.symbol }\n")
 
     def run_momentum(self, lookback=20, threshold = 0.02):
+        """Runs a momentum strategy which triggers a buy order if the pct change of 
+        a stock price is greater than the threshold and sell order if the pct change of a 
+        stock price is less than the threshold
+
+        Args:
+            lookback (int, optional): How many days to go back to. Defaults to 20.
+            threshold (float, optional): Chosen percentage. Defaults to 0.02.
+        """        
         self.position = 0
         self.num_trades = 0
 
@@ -174,7 +222,8 @@ self.initial_amount) * 100
         print(f"Num Trades: {self.num_trades}")
         print(f"Balance: {self.balance}")
 
-        print("=== Momentum Strategy ===\n")
+        print("=== Momentum Strategy ===")
+        print(f"Stock: {self.symbol }\n")
 
 for symbol in symbols:
     for strat_name, params in strategies:
