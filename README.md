@@ -1,4 +1,5 @@
 # Trading System
+A data pipeline that is an event-based backtester with three trading strategies(SMA, momentum and mean reversion) that prints results from these strategies and includes analysis of why these strategies succeed or fail.
 
 ## Overview
 A Python script that fetches historical stock data from yfinance, calculates  returns from three different trading strategies(SMA, momentum, mean reversion) over two years, and validates data quality.
@@ -23,7 +24,7 @@ pip install pandas yfinance
 
 ## Usage
 ```bash
-python fetch_data.py
+python backtester.py
 ```
 
 The script will:
@@ -100,3 +101,7 @@ Balance: 11600.579803466802
 | 27 | TSM    | sma      | 73.15    | 0.09   | 2      |
 | 28 | TSM    | mean_rev | 20.21    | 0.09   | 4      |
 | 29 | TSM    | momentum | 103.45   | 0.09   | 18     |
+
+## Analysis.md
+Includes explanations of why/how these strategies work or fail. Along with explanations on max drawdown and why that loss would not be affected by the trading strategy as there exit parameters in each strategy.
+[Analysis.md](Analysis.md)

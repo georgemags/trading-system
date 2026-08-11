@@ -2,9 +2,10 @@ RKLB momentum strategy succeeding - The reason behind why RKLB momentum strategy
 
 META momentum strategy failing - The reason behind why the momentum strategy fails for META during this two year span is because of the volatility of the stock which causes there to be little momentum in the stock for the strategy to work. 8/3/2026
 
-GOOG SMA strategy succeeding - The reason that the SMA strategy works because for the previous year which is SMA2 GOOG had an average price lower than SMA1 during the SMA1 period which causes the buy period and the stock price continued to rise which leads to the big return. 8/3/2026
+GOOGL SMA strategy succeeding - The reason that the SMA strategy works because for the previous year(SMA2 lookback time) for GOOGL had an average price lower than the past 45 days(SMA1 lookback time). This causes a buy signal(golden cross)and the stock price continued to rise which leads to the big return. 8/3/2026
 
 Results: Max Drawdown: -60.99% RKLB 2 year span Total Return: 926.37% Momentum Strategy
 Max Drawdown: -29.81% GOOGL 2 year span Total Return: 82.63% SMA Strategy
 Max Drawdown: -34.15% META 2 year span, Total Return: -35.02% Momentum Strategy
 
+Reported Max Drawdown measures the stock's raw price collapse over the full 2-year window, not the strategy's actual realized loss, because the strategy's own exit rules would have closed the position before the full crash played out.
