@@ -24,7 +24,7 @@ pip install pandas yfinance
 
 ## Usage
 ```bash
-python backtester.py
+python src/backtester.py
 ```
 
 The script will:
@@ -32,7 +32,7 @@ The script will:
 2. Save each stock's data as `{SYMBOL}_data.csv`
 
 ## Output Files
-- `AAPL_data.csv`, `MSFT_data.csv`, etc. - Stock data with strategy associated with each symbol, return %, sharpe ratio and number of trades
+- `AAPL_data.csv`, `MSFT_data.csv`, etc. - Stock data with date and close price
 
 ## Error Handling
 If a stock fails to download, the script logs the error and continues with the next stock.
