@@ -7,3 +7,4 @@ GOOG SMA strategy succeeding - The reason that the SMA strategy works because fo
 Results: Max Drawdown: -60.99% RKLB 2 year span Total Return: 926.37% Momentum Strategy
 Max Drawdown: -29.81% GOOGL 2 year span Total Return: 82.63% SMA Strategy
 Max Drawdown: -34.15% META 2 year span, Total Return: -35.02% Momentum Strategy
+

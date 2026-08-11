@@ -1,13 +1,11 @@
 # Trading System
 
 ## Overview
-A Python script that fetches historical stock data from yfinance, calculates daily returns, and validates data quality.
+A Python script that fetches historical stock data from yfinance, calculates  returns from three different trading strategies(SMA, momentum, mean reversion) over two years, and validates data quality.
 
 ## What It Does
-- Downloads 1 year of daily OHLCV (Open, High, Low, Close, Volume) data for 10 stocks
-- Calculates daily percentage returns
-- Validates data for missing values (NaN) in Close prices
-- Checks for missing trading dates (excluding weekends and US holidays)
+- Downloads 2 year of daily close price of each stock ticker
+- Calculates return percentage from each trading strategy(SMA, momentum and mean reversion), total units bought with cost and sold at total proceeds. 
 - Saves clean data to CSV files
 
 ## Stocks Included
@@ -16,8 +14,7 @@ AAPL, MSFT, GOOGL, NVDA, RKLB, AMD, JPM, AVGO, META, TSM
 ## Requirements
 pandas
 yfinance
-holidays
-matplotlib
+
 
 ## Installation
 ```bash
@@ -31,11 +28,10 @@ python fetch_data.py
 
 The script will:
 1. Download data for each stock
-2. Print validation results (NaN count, missing dates)
-3. Save each stock's data as `{SYMBOL}_data.csv`
+2. Save each stock's data as `{SYMBOL}_data.csv`
 
 ## Output Files
-- `AAPL_data.csv`, `MSFT_data.csv`, etc. - Stock data with Close, High, Low, Open, Volume, and daily_return columns
+- `AAPL_data.csv`, `MSFT_data.csv`, etc. - Stock data with strategy associated with each symbol, return %, sharpe ratio and number of trades
 
 ## Error Handling
 If a stock fails to download, the script logs the error and continues with the next stock.
@@ -71,7 +67,7 @@ Max Drawdown: -33.36%
 Num Trades: 22
 Balance: 11600.579803466802
 
-## Results after testing each ticker and strategy
+## Results after testing each ticker and strategy 8/3/2026
 |    | Symbol | Strategy | Return % | Sharpe | Trades |
 | -- | ------ | -------- | -------- | ------ | ------ |
 | 0  | AAPL   | sma      | 36.1     | 0.05   | 2      |

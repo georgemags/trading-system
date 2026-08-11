@@ -161,7 +161,7 @@ self.initial_amount) * 100
 
         Args:
             lookback (int, optional): How many days to go back to. Defaults to 50.
-            threshold (float, optional): Chosen percentage. Defaults to 2.0.
+            threshold (float, optional): Z-score. Defaults to 2.0.
         """        
         rolling_mean = self.data['Close'].rolling(lookback).mean()
         rolling_std_dev = self.data['Close'].rolling(lookback).std()
