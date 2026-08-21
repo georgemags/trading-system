@@ -110,9 +110,14 @@ class BacktestBase:
         self.num_trades = 0
         self.data["SMA1"] = self.data["Close"].rolling(SMA1).mean()
         self.data["SMA2"] = self.data["Close"].rolling(SMA2).mean()
+        portfolio_values = []
 
+        portfolio_values = [self.balance] * SMA2
         for bar in range(SMA2, len(self.data)):
+            price = self.data["Close"].iloc[bar]
+            
             if self.position == 0:
+
                 if self.data["SMA1"].iloc[bar] > self.data["SMA2"].iloc[bar]:
                     self.place_buy_order(bar, amount = self.balance)
                     self.position = 1
@@ -120,7 +125,9 @@ class BacktestBase:
                 if self.data["SMA1"].iloc[bar] < self.data["SMA2"].iloc[bar]:
                     self.place_sell_order(bar, units = self.units)
                     self.position = 0
+            portfolio_values.append(self.balance + self.units * price)
 
+        self.data["portfolio value"] = portfolio_values
         self.close_out()
         self.calculate_metrics()
 
@@ -139,14 +146,17 @@ class BacktestBase:
         """        
         self.total_return = ((self.balance - self.initial_amount) /
 self.initial_amount) * 100
-        self.data['daily_returns'] = self.data['Close'].pct_change()
+        self.data['strategy returns'] = self.data['portfolio value'].pct_change()
 
-        avg_daily_returns = self.data['daily_returns'].mean()
-        std_daily_returns = self.data['daily_returns'].std()
-        self.sharpe_ratio = avg_daily_returns/std_daily_returns
+        avg__returns = self.data['strategy returns'].mean()
+        std__returns = self.data['strategy returns'].std()
+        if std__returns == 0 or pd.isna(std__returns):
+            self.sharpe_ratio = 0.0  # or float('nan'), your call — just don't let it silently print "nan"
+        else:
+            self.sharpe_ratio = (avg__returns / std__returns) * (252 ** .5)
 
-        running_max = self.data['Close'].expanding().max()
-        drawdown = (self.data['Close'] - running_max) / running_max
+        running_max = self.data['portfolio value'].expanding().max()
+        drawdown = (self.data['portfolio value'] - running_max) / running_max
         self.max_drawdown = drawdown.min() * 100
 
         print(f"Total Return: {self.total_return:.2f}%")
@@ -169,8 +179,11 @@ self.initial_amount) * 100
         upper_band = rolling_mean + (threshold * rolling_std_dev)
         self.position = 0
         self.num_trades = 0
+        portfolio_values = []
 
+        portfolio_values = [self.balance] * lookback
         for bar in range(lookback, len(self.data)):
+
             price = self.data["Close"].iloc[bar]
             if self.position == 0:
                 if price < lower_band.iloc[bar]:
@@ -181,7 +194,9 @@ self.initial_amount) * 100
                 if price > upper_band.iloc[bar]:
                     self.place_sell_order(bar, units = self.units)
                     self.position = 0
+            portfolio_values.append(self.balance + self.units * price)
 
+        self.data["portfolio value"] = portfolio_values
         self.close_out()
         self.calculate_metrics()
 
@@ -202,10 +217,12 @@ self.initial_amount) * 100
         """        
         self.position = 0
         self.num_trades = 0
-
         self.data["momentum"] = self.data["Close"].pct_change(lookback)
+        portfolio_values = []
 
+        portfolio_values = [self.balance] * lookback
         for bar in range(lookback, len(self.data)):
+            price = self.data["Close"].iloc[bar]
             momentum = self.data["momentum"].iloc[bar]
             if self.position == 0:
                 if momentum > threshold:
@@ -215,7 +232,9 @@ self.initial_amount) * 100
                 if momentum < -threshold:
                     self.place_sell_order(bar, units = self.units)
                     self.position = 0
+            portfolio_values.append(self.balance + self.units * price)
 
+        self.data["portfolio value"] = portfolio_values
         self.close_out()
         self.calculate_metrics()
         
