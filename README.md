@@ -93,7 +93,6 @@ Balance: 78505.8584365845
 
 
 Stock: META
-
 Bought 17 at 555.90, cost: 9450.33
 Sold 17 at 564.33, proceeds: 9593.67
 Bought 17 at 589.44, cost: 10020.46
