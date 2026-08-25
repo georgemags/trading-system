@@ -40,13 +40,13 @@ If a stock fails to download, the script logs the error and continues with the n
 
 ## Documentation of Outputs
 Stock: GOOGL
-Bought 55 at 179.57, cost: 9876.40
-Sold 55 at 216.85, proceeds: 11926.75
-Total Return: 20.50%
-Sharpe Ratio: 0.49
-Max Drawdown: -20.00%
+Bought 48 at 207.90, cost: 9979.05
+Sold 48 at 340.67, proceeds: 16352.16
+Total Return: 63.73%
+Sharpe Ratio: 1.19
+Max Drawdown: -21.02%
 Num Trades: 2
-Balance: 12050.35461425781
+Balance: 16373.108886718752
 === SMA Strategy ===
 
 Stock: RKLB
