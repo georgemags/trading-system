@@ -1,9 +1,10 @@
+import os
 import pandas as pd
 from sqlalchemy import create_engine
 
 # Update these to match what you set during MySQL install
 USER = "root"
-PASSWORD = "Ghostblade21$"
+PASSWORD = os.environ["MYSQL_PASSWORD"]
 HOST = "localhost"
 DATABASE = "backtest"
 
