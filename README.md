@@ -93,7 +93,7 @@ Includes explanations of why/how these strategies work or fail. Along with expla
 
 An interactive Tableau dashboard visualizing risk-adjusted strategy performance across all 10 equities:
 
-**[View the dashboard on Tableau Public] (https://public.tableau.com/app/profile/george.maguire1017/viz/BacktestStrategyPerformanceDashboard/StrategyPerformanceDashboard)**
+**[View the dashboard on Tableau Public](https://public.tableau.com/app/profile/george.maguire1017/viz/BacktestStrategyPerformanceDashboard/StrategyPerformanceDashboard)**
 
 The dashboard includes:
 
