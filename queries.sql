@@ -19,3 +19,21 @@ SELECT
     SUM(CASE WHEN sharpe > 0 THEN 1 ELSE 0 END) AS positive_count,
     SUM(CASE WHEN sharpe < 0 THEN 1 ELSE 0 END) AS negative_count
 FROM backtest.results;
+
+-- 4. Which strategies performed the best on avg based on sharpe ratio
+SELECT strategy, AVG(sharpe) AS avg_sharpe
+FROM backtest.results
+GROUP BY strategy
+HAVING AVG(sharpe) > 0.5
+ORDER BY avg_sharpe DESC;
+
+-- 5. Which strategy performed the worst according to the symbol
+SELECT symbol, MIN(sharpe) as worst_sharpe
+FROM backtest.results
+GROUP BY symbol
+
+-- 6. Difference between worst and best sharpe ratios on strategy by each symbol
+SELECT symbol, round(MAX(sharpe) - MIN(sharpe), 2) as sharpe_diff
+FROM backtest.results
+GROUP BY symbol
+ORDER BY sharpe_diff desc
